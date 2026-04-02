@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gnarly Bard | Cinematography & Videography</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --black: #080808;
+    --deep: #0d0d0d;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --white: #f5f0e8;
+    --gray: #888;
+    --card: #111111;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.18s ease, width 0.2s, height 0.2s, opacity 0.2s;
+    transform: translate(-50%, -50%);
+    opacity: 0.5;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 500;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 4rem;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
+    transition: background 0.4s;
+  }
+  nav.scrolled { background: rgba(8,8,8,0.97); border-bottom: 1px solid rgba(201,168,76,0.15); }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem;
+    letter-spacing: 0.12em;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+  .nav-links a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -3px; left: 0; right: 0;
+    height: 1px; background: var(--gold); transform: scaleX(0); transition: transform 0.3s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-cta {
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--black); background: var(--gold);
+    padding: 0.6rem 1.4rem; border: none;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    cursor: none; transition: background 0.3s, transform 0.2s;
+    text-decoration: none;
+  }
+  .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* Hero */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; overflow: hidden;
+    padding: 0 4rem;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 60% at 70% 40%, rgba(201,168,76,0.07) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 50% at 20% 70%, rgba(201,168,76,0.04) 0%, transparent 60%),
+      linear-gradient(160deg, #0d0d0d 0%, #080808 100%);
+  }
+  .hero-line {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    opacity: 0.4;
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 900px; }
+  .hero-eyebrow {
+    font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem;
+    animation: fadeUp 1s ease both;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 12vw, 11rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    animation: fadeUp 1s 0.15s ease both;
+  }
+  .hero-title .gold { color: var(--gold); }
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    font-style: italic;
+    font-weight: 300;
+    color: rgba(245,240,232,0.65);
+    margin-top: 1.6rem;
+    max-width: 560px;
+    line-height: 1.6;
+    animation: fadeUp 1s 0.3s ease both;
+  }
+  .hero-actions {
+    display: flex; gap: 1.2rem; margin-top: 3rem; align-items: center;
+    animation: fadeUp 1s 0.45s ease both;
+  }
+  .btn-primary {
+    display: inline-block;
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    color: var(--black); background: var(--gold);
+    padding: 1rem 2.4rem; text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-ghost {
+    display: inline-block;
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif; font-weight: 400;
+    color: var(--white); border: 1px solid rgba(245,240,232,0.25);
+    padding: 1rem 2.4rem; text-decoration: none;
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 4rem;
+    display: flex; align-items: center; gap: 0.8rem;
+    font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gray);
+    animation: fadeUp 1s 0.7s ease both;
+  }
+  .scroll-line {
+    width: 40px; height: 1px; background: var(--gray);
+    animation: scrollLine 2s 1.5s ease infinite;
+  }
+  .hero-reel-tag {
+    position: absolute; right: 4rem; bottom: 2.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 0.85rem; color: var(--gray);
+    writing-mode: vertical-rl; letter-spacing: 0.12em;
+    animation: fadeUp 1s 0.6s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollLine {
+    0%, 100% { transform: scaleX(1); opacity: 1; }
+    50% { transform: scaleX(1.5); opacity: 0.5; }
+  }
+
+  /* Section base */
+  section { padding: 7rem 4rem; position: relative; }
+  .section-label {
+    font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    line-height: 1; letter-spacing: 0.04em;
+    color: var(--white);
+  }
+  .section-body {
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+    font-weight: 300; line-height: 1.85; color: rgba(245,240,232,0.7);
+    max-width: 580px;
+  }
+  .divider {
+    width: 60px; height: 2px; background: var(--gold); margin: 1.5rem 0;
+  }
+
+  /* About */
+  #about { background: var(--deep); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+    align-items: center; margin-top: 4rem;
+  }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+  .stat { border-left: 2px solid var(--gold); padding-left: 1.2rem; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; color: var(--gold); line-height: 1;
+  }
+  .stat-label { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); margin-top: 0.3rem; }
+  .about-visual {
+    position: relative; aspect-ratio: 4/5;
+    background: var(--card);
+    overflow: hidden;
+  }
+  .about-visual::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.12) 0%, transparent 60%);
+  }
+  .about-visual-inner {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 0.8rem;
+  }
+  .film-icon { font-size: 4rem; opacity: 0.2; }
+  .about-frame {
+    position: absolute; top: 16px; left: 16px; right: 16px; bottom: 16px;
+    border: 1px solid rgba(201,168,76,0.2);
+    pointer-events: none;
+  }
+  .about-frame::before, .about-frame::after {
+    content: ''; position: absolute;
+    width: 20px; height: 20px;
+    border-color: var(--gold); border-style: solid;
+  }
+  .about-frame::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+  .about-frame::after { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+  .about-tag {
+    position: absolute; bottom: -1rem; right: -1rem;
+    background: var(--gold); color: var(--black);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem; letter-spacing: 0.08em;
+    padding: 0.7rem 1.2rem;
+  }
+
+  /* Services */
+  #services { background: var(--black); }
+  .services-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 4rem; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: rgba(201,168,76,0.1); }
+  .service-card {
+    background: var(--deep); padding: 2.2rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .service-card::before {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px; background: var(--gold);
+    transform: scaleX(0); transition: transform 0.4s;
+  }
+  .service-card:hover { background: #131313; }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-icon { font-size: 1.8rem; margin-bottom: 1rem; opacity: 0.7; }
+  .service-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem; letter-spacing: 0.06em; color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+  .service-desc { font-size: 0.82rem; line-height: 1.7; color: var(--gray); }
+
+  /* Pricing */
+  #pricing { background: var(--deep); }
+  .pricing-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 4rem; }
+  .pricing-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: rgba(201,168,76,0.1); }
+  .price-card {
+    background: var(--card); padding: 2.8rem 2.2rem;
+    position: relative; transition: transform 0.3s;
+  }
+  .price-card.featured {
+    background: linear-gradient(160deg, #1a1500 0%, #0f0e08 100%);
+    border: 1px solid rgba(201,168,76,0.3);
+  }
+  .price-card.featured .featured-badge {
+    position: absolute; top: -1px; right: 1.5rem;
+    background: var(--gold); color: var(--black);
+    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+    font-weight: 500; padding: 0.3rem 0.8rem;
+  }
+  .price-card:hover { transform: translateY(-4px); }
+  .price-tier {
+    font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.8rem;
+  }
+  .price-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem; color: var(--white); line-height: 1;
+  }
+  .price-amount span { font-size: 1.6rem; vertical-align: top; margin-top: 0.6rem; display: inline-block; color: var(--gold); }
+  .price-per { font-size: 0.72rem; color: var(--gray); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; }
+  .price-divider { height: 1px; background: rgba(201,168,76,0.15); margin-bottom: 1.5rem; }
+  .price-features { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .price-features li { font-size: 0.82rem; color: rgba(245,240,232,0.65); display: flex; align-items: flex-start; gap: 0.6rem; line-height: 1.5; }
+  .price-features li::before { content: '—'; color: var(--gold); flex-shrink: 0; }
+  .pricing-note {
+    margin-top: 3rem;
+    background: rgba(201,168,76,0.06); border-left: 2px solid var(--gold);
+    padding: 1.5rem 2rem;
+    font-size: 0.88rem; color: rgba(245,240,232,0.7); line-height: 1.7;
+  }
+  .pricing-note strong { color: var(--gold); }
+
+  /* Guarantee */
+  #guarantee {
+    background: linear-gradient(135deg, #0d0b00 0%, #080808 60%);
+    border-top: 1px solid rgba(201,168,76,0.15);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    text-align: center;
+    padding: 6rem 4rem;
+  }
+  .guarantee-inner { max-width: 700px; margin: 0 auto; }
+  .guarantee-icon { font-size: 3rem; margin-bottom: 1.5rem; }
+  .guarantee-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    color: var(--white); letter-spacing: 0.04em; margin-bottom: 1rem;
+  }
+  .guarantee-title span { color: var(--gold); }
+  .guarantee-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-style: italic; font-weight: 300;
+    color: rgba(245,240,232,0.7); line-height: 1.7; max-width: 560px; margin: 0 auto;
+  }
+
+  /* Equipment */
+  #equipment { background: var(--black); }
+  .equip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; margin-top: 4rem; }
+  .equip-list { display: flex; flex-direction: column; gap: 1.2rem; margin-top: 2rem; }
+  .equip-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1.2rem; background: var(--card); border-left: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .equip-item:hover { border-left-color: var(--gold); }
+  .equip-item-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .equip-item-text h4 { font-size: 0.82rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--white); margin-bottom: 0.3rem; }
+  .equip-item-text p { font-size: 0.78rem; color: var(--gray); line-height: 1.6; }
+  .platforms { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.5rem; }
+  .platform-tag {
+    font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+    border: 1px solid rgba(201,168,76,0.3); color: var(--gold);
+    padding: 0.4rem 0.9rem;
+  }
+
+  /* Contact */
+  #contact { background: var(--deep); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; margin-top: 4rem; }
+  .contact-info { display: flex; flex-direction: column; gap: 2rem; }
+  .contact-item { display: flex; gap: 1.2rem; align-items: flex-start; }
+  .contact-item-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+  .contact-item-text h4 { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
+  .contact-item-text a, .contact-item-text p { font-size: 1rem; color: var(--white); text-decoration: none; }
+  .contact-item-text a:hover { color: var(--gold); }
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); }
+  .form-group input, .form-group textarea, .form-group select {
+    background: var(--card); border: 1px solid rgba(245,240,232,0.08);
+    color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+    padding: 0.85rem 1rem; outline: none;
+    transition: border-color 0.3s;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--gold); }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .form-group select option { background: var(--card); }
+  .form-submit {
+    background: var(--gold); color: var(--black);
+    font-family: 'DM Sans', sans-serif; font-size: 0.72rem;
+    font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
+    border: none; padding: 1rem 2.4rem; cursor: none;
+    transition: background 0.3s, transform 0.2s; align-self: flex-start;
+  }
+  .form-submit:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .free-consult-note { font-size: 0.75rem; color: var(--gray); margin-top: 0.3rem; }
+  .free-consult-note span { color: var(--gold); }
+
+  /* Footer */
+  footer {
+    background: #050505; border-top: 1px solid rgba(201,168,76,0.1);
+    padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem; letter-spacing: 0.12em; color: var(--white);
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy { font-size: 0.72rem; color: var(--gray); letter-spacing: 0.08em; }
+  .footer-tagline { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 0.85rem; color: var(--gray); }
+
+  /* Reveal animations */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* Portfolio */
+  #portfolio { background: var(--black); }
+  .portfolio-tabs { display: flex; gap: 0; margin: 2.5rem 0 2rem; border-bottom: 1px solid rgba(201,168,76,0.15); }
+  .ptab {
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif; font-weight: 400;
+    color: var(--gray); background: none; border: none;
+    padding: 0.85rem 2rem; cursor: none;
+    position: relative; transition: color 0.3s;
+  }
+  .ptab::after {
+    content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+    height: 2px; background: var(--gold);
+    transform: scaleX(0); transition: transform 0.3s;
+  }
+  .ptab.active { color: var(--white); }
+  .ptab.active::after { transform: scaleX(1); }
+  .ptab:hover { color: var(--white); }
+
+  .portfolio-panel { display: none; }
+  .portfolio-panel.active { display: block; }
+
+  /* Upload zone */
+  .upload-zone {
+    border: 1.5px dashed rgba(201,168,76,0.3);
+    padding: 2.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    cursor: none;
+    transition: border-color 0.3s, background 0.3s;
+    position: relative;
+  }
+  .upload-zone:hover, .upload-zone.dragover { border-color: var(--gold); background: rgba(201,168,76,0.04); }
+  .upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .upload-icon { font-size: 2rem; margin-bottom: 0.6rem; opacity: 0.5; }
+  .upload-label { font-size: 0.8rem; color: var(--gray); letter-spacing: 0.1em; }
+  .upload-label span { color: var(--gold); }
+  .upload-sub { font-size: 0.68rem; color: rgba(136,136,136,0.6); margin-top: 0.4rem; letter-spacing: 0.08em; }
+
+  /* URL input for videos */
+  .video-url-row { display: flex; gap: 0.8rem; margin-bottom: 2rem; }
+  .video-url-row input {
+    flex: 1; background: var(--card); border: 1px solid rgba(245,240,232,0.08);
+    color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    padding: 0.8rem 1rem; outline: none; transition: border-color 0.3s;
+  }
+  .video-url-row input:focus { border-color: var(--gold); }
+  .video-url-row input::placeholder { color: var(--gray); }
+  .btn-add-video {
+    background: var(--gold); color: var(--black);
+    font-family: 'DM Sans', sans-serif; font-size: 0.7rem;
+    font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
+    border: none; padding: 0 1.5rem; cursor: none; white-space: nowrap;
+    transition: background 0.3s;
+  }
+  .btn-add-video:hover { background: var(--gold-light); }
+
+  /* Grid */
+  .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5px; background: rgba(201,168,76,0.08); }
+  .media-item {
+    position: relative; aspect-ratio: 16/10;
+    background: var(--card); overflow: hidden;
+    cursor: none;
+  }
+  .media-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease, filter 0.4s; filter: brightness(0.85); }
+  .media-item:hover img { transform: scale(1.05); filter: brightness(1); }
+  .media-item .media-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .media-item:hover .media-overlay { opacity: 1; }
+  .media-overlay-icon { font-size: 2rem; }
+  .media-item .media-delete {
+    position: absolute; top: 0.6rem; right: 0.6rem;
+    background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.15);
+    color: var(--white); font-size: 0.75rem; padding: 0.25rem 0.5rem;
+    cursor: none; opacity: 0; transition: opacity 0.3s;
+    line-height: 1;
+  }
+  .media-item:hover .media-delete { opacity: 1; }
+  .media-item .media-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.75));
+    padding: 1.5rem 0.8rem 0.6rem;
+    font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(245,240,232,0.7);
+    transform: translateY(100%); transition: transform 0.3s;
+  }
+  .media-item:hover .media-label { transform: translateY(0); }
+
+  /* Video embed item */
+  .video-embed-item {
+    position: relative; aspect-ratio: 16/10;
+    background: var(--card); overflow: hidden;
+  }
+  .video-embed-item iframe { width: 100%; height: 100%; border: none; display: block; }
+  .video-embed-item .media-delete {
+    position: absolute; top: 0.6rem; right: 0.6rem; z-index: 10;
+    background: rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.15);
+    color: var(--white); font-size: 0.75rem; padding: 0.3rem 0.6rem;
+    cursor: none;
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center; padding: 4rem 2rem;
+    font-size: 0.82rem; color: var(--gray); letter-spacing: 0.08em;
+  }
+  .empty-state-icon { font-size: 2.5rem; opacity: 0.2; margin-bottom: 0.8rem; }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(0,0,0,0.95);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .lightbox.open { opacity: 1; pointer-events: all; }
+  .lightbox-inner { position: relative; max-width: 90vw; max-height: 90vh; }
+  .lightbox-inner img { max-width: 90vw; max-height: 85vh; object-fit: contain; display: block; }
+  .lightbox-close {
+    position: absolute; top: -2.5rem; right: 0;
+    background: none; border: none; color: var(--white);
+    font-size: 1.5rem; cursor: none; opacity: 0.7; transition: opacity 0.2s;
+  }
+  .lightbox-close:hover { opacity: 1; }
+  .lightbox-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold); font-size: 1.4rem;
+    width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+    cursor: none; transition: background 0.2s;
+  }
+  .lightbox-nav:hover { background: rgba(201,168,76,0.3); }
+  .lightbox-prev { left: -60px; }
+  .lightbox-next { right: -60px; }
+  .lightbox-counter { position: absolute; bottom: -2rem; left: 50%; transform: translateX(-50%); font-size: 0.7rem; color: var(--gray); letter-spacing: 0.15em; }
+
+  /* Mobile */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    #hero { padding: 0 1.5rem; }
+    .about-grid, .equip-grid, .contact-grid, .services-intro, .pricing-header { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-visual { display: none; }
+    .services-grid, .pricing-cards { grid-template-columns: 1fr; }
+    .hero-reel-tag { display: none; }
+    .hero-scroll { left: 1.5rem; }
+    footer { flex-direction: column; gap: 0.8rem; text-align: center; }
+    .form-row { grid-template-columns: 1fr; }
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Gnarly<span>Bard</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#equipment">Equipment</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Free Consultation</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-line"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Cinematography &amp; Videography</p>
+    <h1 class="hero-title">Gnarly<br/><span class="gold">Bard</span></h1>
+    <p class="hero-subtitle">Where your vision comes to life — frame by frame, scene by scene, story by story.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Start Your Project</a>
+      <a href="#services" class="btn-ghost">Explore Services</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div>Scroll to explore</div>
+  <div class="hero-reel-tag">Passion Driven. Client Focused.</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div>
+      <p class="section-label reveal">Our Story</p>
+      <h2 class="section-title reveal reveal-delay-1">Passion Behind<br/>Every Frame</h2>
+      <div class="divider reveal reveal-delay-2"></div>
+      <p class="section-body reveal reveal-delay-2">At Gnarly Bard, filmmaking isn't just a profession — it's a calling. From the very first frame to the final cut, every project is approached with the kind of deep passion and dedication that only comes from truly loving what you do.</p>
+      <p class="section-body reveal reveal-delay-3" style="margin-top:1rem;">Our clients aren't just customers; they're collaborators, storytellers, and the heartbeat behind every video we create. That connection drives everything we do, and it shows in every single frame.</p>
+      <div class="about-stats reveal">
+        <div class="stat">
+          <div class="stat-num">$25</div>
+          <div class="stat-label">Starting per hour</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">10%</div>
+          <div class="stat-label">Deposit to start</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Satisfaction guaranteed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">Free</div>
+          <div class="stat-label">Consultations always</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual reveal reveal-delay-1">
+      <div class="about-frame"></div>
+      <div class="about-visual-inner">
+        <div class="film-icon">🎬</div>
+        <p style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.15em;color:rgba(201,168,76,0.3);">GNARLY BARD MEDIA</p>
+      </div>
+      <div class="about-tag">Est. Today</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-intro">
+    <div>
+      <p class="section-label reveal">What We Do</p>
+      <h2 class="section-title reveal reveal-delay-1">No Project<br/>Too Small.<br/>No Vision<br/>Too Big.</h2>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <p class="section-body">We bring the same level of passion and professionalism to every project — whether you're capturing a once-in-a-lifetime moment or building a brand from the ground up.</p>
+    </div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon">💍</div>
+      <div class="service-name">Weddings &amp; Events</div>
+      <div class="service-desc">Timeless, cinematic coverage of your most precious moments — weddings, engagements, celebrations, and graduations.</div>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-icon">🎵</div>
+      <div class="service-name">Music Videos</div>
+      <div class="service-desc">Visually striking music videos that bring your sound to life with compelling storytelling and cinematic flair.</div>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-icon">📱</div>
+      <div class="service-name">Social Media Content</div>
+      <div class="service-desc">Platform-optimized video content crafted for YouTube, Instagram, TikTok, Facebook, and beyond.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🏢</div>
+      <div class="service-name">Corporate &amp; Commercial</div>
+      <div class="service-desc">Professional promotional videos, corporate productions, and commercial content that elevates your brand.</div>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-icon">🏠</div>
+      <div class="service-name">Real Estate</div>
+      <div class="service-desc">Stunning real estate promotional videos that showcase properties in their best light and attract serious buyers.</div>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-icon">🎬</div>
+      <div class="service-name">Film &amp; Documentary</div>
+      <div class="service-desc">Short films, feature films, documentaries, and personal/private projects — every format, every story.</div>
+    </div>
+  </div>
+  <div class="reveal" style="margin-top:3rem;">
+    <p class="section-body">We're also fluent in a wide range of filming styles: documentary, short film, feature films, narrative, and more. We tailor our approach to match the tone and feeling your project deserves.</p>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pricing-header">
+    <div>
+      <p class="section-label reveal">Transparent Pricing</p>
+      <h2 class="section-title reveal reveal-delay-1">Affordable<br/>Excellence</h2>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <p class="section-body">Compared to other independent videographers and small production companies, our rates are genuinely accessible — without ever sacrificing quality. What we quote is what you pay. No hidden fees. No surprises.</p>
+    </div>
+  </div>
+  <div class="pricing-cards">
+    <div class="price-card reveal">
+      <div class="price-tier">Essential</div>
+      <div class="price-amount"><span>$</span>25</div>
+      <div class="price-per">Per Hour</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Single/simple shoots</li>
+        <li>Basic editing included</li>
+        <li>Standard color correction</li>
+        <li>Delivery in requested format</li>
+        <li>10% deposit to begin</li>
+      </ul>
+    </div>
+    <div class="price-card featured reveal reveal-delay-1">
+      <div class="featured-badge">Most Popular</div>
+      <div class="price-tier">Signature</div>
+      <div class="price-amount"><span>$</span>50</div>
+      <div class="price-per">Per Hour</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Multi-scene productions</li>
+        <li>Advanced editing</li>
+        <li>Professional color grading</li>
+        <li>Targeted special effects</li>
+        <li>Multiple format delivery</li>
+        <li>10% deposit to begin</li>
+      </ul>
+    </div>
+    <div class="price-card reveal reveal-delay-2">
+      <div class="price-tier">Cinematic</div>
+      <div class="price-amount"><span>$</span>75</div>
+      <div class="price-per">Per Hour</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Full productions &amp; films</li>
+        <li>Complex editing &amp; post</li>
+        <li>Full cinematic color grade</li>
+        <li>Custom VFX &amp; effects</li>
+        <li>All platform delivery</li>
+        <li>10% deposit to begin</li>
+      </ul>
+    </div>
+  </div>
+  <div class="pricing-note reveal">
+    <strong>Payment plans available.</strong> We work within your budget — not against it. Consultations are always free, and your quoted price is your final price. If you're not satisfied with the final product, <strong>you owe only the deposit.</strong> That's our guarantee.
+  </div>
+</section>
+
+<!-- GUARANTEE -->
+<section id="guarantee">
+  <div class="guarantee-inner">
+    <div class="guarantee-icon reveal">🛡️</div>
+    <h2 class="guarantee-title reveal reveal-delay-1">Your Satisfaction<br/><span>Guaranteed</span></h2>
+    <div class="divider reveal reveal-delay-2" style="margin:1.5rem auto;"></div>
+    <p class="guarantee-text reveal reveal-delay-2">We stand behind our work with complete confidence. If for any reason you're not satisfied with the final product, you owe nothing beyond the initial deposit. Your trust means everything to us.</p>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <p class="section-label reveal">Our Work</p>
+  <h2 class="section-title reveal reveal-delay-1">Portfolio</h2>
+  <div class="divider reveal reveal-delay-2"></div>
+  <p class="section-body reveal reveal-delay-2" style="margin-bottom:0;">Showcase your work by adding photos and videos below. Upload images directly or paste a YouTube / Vimeo link to embed a video.</p>
+
+  <div class="portfolio-tabs reveal">
+    <button class="ptab active" onclick="switchTab('photos')">📷 &nbsp;Photos</button>
+    <button class="ptab" onclick="switchTab('videos')">🎬 &nbsp;Videos</button>
+  </div>
+
+  <!-- PHOTOS PANEL -->
+  <div class="portfolio-panel active" id="panel-photos">
+    <div class="upload-zone" id="photoDropZone">
+      <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotoUpload(this.files)"/>
+      <div class="upload-icon">🖼️</div>
+      <p class="upload-label">Drag &amp; drop photos here, or <span>click to browse</span></p>
+      <p class="upload-sub">JPG, PNG, WEBP, GIF · Multiple files supported</p>
+    </div>
+    <div class="media-grid" id="photoGrid">
+      <div class="empty-state" id="photoEmpty" style="grid-column:1/-1;">
+        <div class="empty-state-icon">📷</div>
+        <p>No photos yet — upload some above to showcase your work!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIDEOS PANEL -->
+  <div class="portfolio-panel" id="panel-videos">
+    <div class="video-url-row">
+      <input type="text" id="videoUrlInput" placeholder="Paste a YouTube or Vimeo URL (e.g. https://www.youtube.com/watch?v=...)"/>
+      <button class="btn-add-video" onclick="addVideoEmbed()">+ Add Video</button>
+    </div>
+    <div class="upload-zone" id="videoDropZone" style="margin-bottom:2rem;">
+      <input type="file" id="videoInput" accept="video/*" multiple onchange="handleVideoUpload(this.files)"/>
+      <div class="upload-icon">🎥</div>
+      <p class="upload-label">Or drag &amp; drop local video files, or <span>click to browse</span></p>
+      <p class="upload-sub">MP4, MOV, WEBM · Plays directly in browser</p>
+    </div>
+    <div class="media-grid" id="videoGrid">
+      <div class="empty-state" id="videoEmpty" style="grid-column:1/-1;">
+        <div class="empty-state-icon">🎬</div>
+        <p>No videos yet — paste a URL above or upload a local video file!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-inner" id="lightboxInner">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)">&#8249;</button>
+    <img id="lightboxImg" src="" alt=""/>
+    <button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)">&#8250;</button>
+    <div class="lightbox-counter" id="lightboxCounter"></div>
+  </div>
+</div>
+
+<!-- EQUIPMENT -->
+<section id="equipment">
+  <div class="equip-grid">
+    <div>
+      <p class="section-label reveal">Our Gear</p>
+      <h2 class="section-title reveal reveal-delay-1">Industry-Standard<br/>Equipment</h2>
+      <div class="divider reveal reveal-delay-2"></div>
+      <p class="section-body reveal reveal-delay-2">We shoot with industry-standard professional equipment, delivering the highest quality video and crystal-clear professional audio on every production.</p>
+      <div class="equip-list reveal reveal-delay-3">
+        <div class="equip-item">
+          <div class="equip-item-icon">🎥</div>
+          <div class="equip-item-text">
+            <h4>Cinema-Grade Video</h4>
+            <p>Highest quality video capture, renderable in any format your project or platform requires.</p>
+          </div>
+        </div>
+        <div class="equip-item">
+          <div class="equip-item-icon">🎙️</div>
+          <div class="equip-item-text">
+            <h4>Professional Audio</h4>
+            <p>Crystal-clear, broadcast-quality sound on every single production.</p>
+          </div>
+        </div>
+        <div class="equip-item">
+          <div class="equip-item-icon">🎞️</div>
+          <div class="equip-item-text">
+            <h4>Color Grading Suite</h4>
+            <p>Professional post-production tools including full color grading and special effects when needed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <p class="section-label">Platform Delivery</p>
+      <p class="section-body" style="margin-top:0.8rem;">Your final product can be delivered and optimized for every major platform and format:</p>
+      <div class="platforms">
+        <span class="platform-tag">YouTube</span>
+        <span class="platform-tag">Instagram</span>
+        <span class="platform-tag">TikTok</span>
+        <span class="platform-tag">Facebook</span>
+        <span class="platform-tag">LinkedIn</span>
+        <span class="platform-tag">Twitter / X</span>
+        <span class="platform-tag">4K UHD</span>
+        <span class="platform-tag">1080p HD</span>
+        <span class="platform-tag">Any Format</span>
+      </div>
+      <div style="margin-top:3rem;">
+        <p class="section-label">You're In Control</p>
+        <p class="section-body" style="margin-top:0.8rem;">Be involved in every decision — or hand us the wheel for a completely hassle-free experience. However you'd like to work, we adapt to you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label reveal">Let's Connect</p>
+  <h2 class="section-title reveal reveal-delay-1">Start Your<br/>Free Consultation</h2>
+  <div class="divider reveal reveal-delay-2"></div>
+  <div class="contact-grid">
+    <div>
+      <p class="section-body reveal">Reach out anytime — we'd love to hear about your project. All consultations are completely free with zero obligation.</p>
+      <div class="contact-info" style="margin-top:2.5rem;">
+        <div class="contact-item reveal">
+          <div class="contact-item-icon">📞</div>
+          <div class="contact-item-text">
+            <h4>Phone &amp; Text</h4>
+            <a href="tel:4196176035">(419) 617-6035</a>
+          </div>
+        </div>
+        <div class="contact-item reveal reveal-delay-1">
+          <div class="contact-item-icon">📧</div>
+          <div class="contact-item-text">
+            <h4>Email</h4>
+            <a href="/cdn-cgi/l/email-protection#72151c13001e0b101300161f17161b1332151f131b1e5c111d1f"><span class="__cf_email__" data-cfemail="7a1d141b081603181b081e171f1e131b3a1d171b131654191517">[email&#160;protected]</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form reveal reveal-delay-2">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Jane"/>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Doe"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="your@email.com"/>
+      </div>
+      <div class="form-group">
+        <label>Project Type</label>
+        <select>
+          <option value="">Select a service...</option>
+          <option>Wedding / Engagement</option>
+          <option>Event / Celebration</option>
+          <option>Music Video</option>
+          <option>Social Media Content</option>
+          <option>Corporate / Commercial</option>
+          <option>Real Estate</option>
+          <option>Documentary</option>
+          <option>Short / Feature Film</option>
+          <option>Graduation</option>
+          <option>Personal / Private</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tell Us About Your Project</label>
+        <textarea placeholder="Describe your vision, timeline, and any other details..."></textarea>
+      </div>
+      <button class="form-submit" onclick="alert('Thank you! We\'ll be in touch shortly for your free consultation.')">Send Message</button>
+      <p class="free-consult-note"><span>✓ Free consultation</span> &nbsp;·&nbsp; <span>✓ No hidden fees</span> &nbsp;·&nbsp; <span>✓ Satisfaction guaranteed</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Gnarly<span>Bard</span></div>
+  <div class="footer-tagline">"Where Your Vision Comes to Life"</div>
+  <div class="footer-copy">&copy; 2026 Gnarly Bard Media. All rights reserved.</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx+'px'; cursor.style.top = my+'px'; });
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx+'px'; ring.style.top = ry+'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a, button, .service-card, .price-card').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.width = '56px'; ring.style.height = '56px'; ring.style.opacity = '0.8'; });
+    el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.opacity = '0.5'; });
+  });
+
+  // ── Portfolio ──────────────────────────────────────────
+  let photoItems = []; // { src, name }
+  let lightboxIndex = 0;
+
+  function switchTab(tab) {
+    document.querySelectorAll('.ptab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='photos')||(i===1&&tab==='videos')));
+    document.getElementById('panel-photos').classList.toggle('active', tab==='photos');
+    document.getElementById('panel-videos').classList.toggle('active', tab==='videos');
+  }
+
+  // Drag & drop
+  ['photoDropZone','videoDropZone'].forEach(id => {
+    const zone = document.getElementById(id);
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault(); zone.classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      if (id === 'photoDropZone') handlePhotoUpload(files);
+      else handleVideoUpload(files);
+    });
+  });
+
+  function handlePhotoUpload(files) {
+    Array.from(files).forEach(file => {
+      if (!file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        photoItems.push({ src: e.target.result, name: file.name });
+        renderPhotos();
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function renderPhotos() {
+    const grid = document.getElementById('photoGrid');
+    const empty = document.getElementById('photoEmpty');
+    empty.style.display = photoItems.length ? 'none' : 'block';
+    // Remove old photo items
+    grid.querySelectorAll('.media-item').forEach(el => el.remove());
+    photoItems.forEach((item, idx) => {
+      const div = document.createElement('div');
+      div.className = 'media-item';
+      div.innerHTML = `
+        <img src="${item.src}" alt="${item.name}" loading="lazy"/>
+        <div class="media-overlay" onclick="openLightbox(${idx})"><div class="media-overlay-icon">🔍</div></div>
+        <div class="media-label">${item.name}</div>
+        <button class="media-delete" onclick="deletePhoto(${idx}, event)">✕</button>
+      `;
+      grid.appendChild(div);
+    });
+  }
+
+  function deletePhoto(idx, e) {
+    e.stopPropagation();
+    photoItems.splice(idx, 1);
+    renderPhotos();
+  }
+
+  function openLightbox(idx) {
+    lightboxIndex = idx;
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightboxImg').src = photoItems[idx].src;
+    document.getElementById('lightboxCounter').textContent = (idx+1) + ' / ' + photoItems.length;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox(e) {
+    if (e && e.target !== document.getElementById('lightbox') && !e.target.classList.contains('lightbox-close')) return;
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function lightboxNav(dir) {
+    lightboxIndex = (lightboxIndex + dir + photoItems.length) % photoItems.length;
+    document.getElementById('lightboxImg').src = photoItems[lightboxIndex].src;
+    document.getElementById('lightboxCounter').textContent = (lightboxIndex+1) + ' / ' + photoItems.length;
+  }
+
+  document.addEventListener('keydown', e => {
+    const lb = document.getElementById('lightbox');
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') { lb.classList.remove('open'); document.body.style.overflow = ''; }
+    if (e.key === 'ArrowLeft') lightboxNav(-1);
+    if (e.key === 'ArrowRight') lightboxNav(1);
+  });
+
+  // Videos
+  function getEmbedUrl(url) {
+    try {
+      const u = new URL(url.trim());
+      // YouTube
+      if (u.hostname.includes('youtube.com') || u.hostname.includes('youtu.be')) {
+        let id = u.searchParams.get('v') || u.pathname.split('/').pop();
+        return `https://www.youtube.com/embed/${id}?rel=0`;
+      }
+      // Vimeo
+      if (u.hostname.includes('vimeo.com')) {
+        let id = u.pathname.split('/').pop();
+        return `https://player.vimeo.com/video/${id}`;
+      }
+    } catch(e) {}
+    return null;
+  }
+
+  function addVideoEmbed() {
+    const input = document.getElementById('videoUrlInput');
+    const url = input.value.trim();
+    if (!url) return;
+    const embedUrl = getEmbedUrl(url);
+    if (!embedUrl) { alert('Please enter a valid YouTube or Vimeo URL.'); return; }
+    const grid = document.getElementById('videoGrid');
+    document.getElementById('videoEmpty').style.display = 'none';
+    const div = document.createElement('div');
+    div.className = 'video-embed-item';
+    div.innerHTML = `
+      <iframe src="${embedUrl}" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+      <button class="media-delete" onclick="this.parentElement.remove(); checkVideoEmpty()">✕</button>
+    `;
+    grid.appendChild(div);
+    input.value = '';
+  }
+
+  function handleVideoUpload(files) {
+    Array.from(files).forEach(file => {
+      if (!file.type.startsWith('video/')) return;
+      const url = URL.createObjectURL(file);
+      const grid = document.getElementById('videoGrid');
+      document.getElementById('videoEmpty').style.display = 'none';
+      const div = document.createElement('div');
+      div.className = 'video-embed-item';
+      div.innerHTML = `
+        <video src="${url}" controls style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+        <button class="media-delete" onclick="this.parentElement.remove(); checkVideoEmpty()">✕</button>
+      `;
+      grid.appendChild(div);
+    });
+  }
+
+  function checkVideoEmpty() {
+    const grid = document.getElementById('videoGrid');
+    const hasItems = grid.querySelectorAll('.video-embed-item').length > 0;
+    document.getElementById('videoEmpty').style.display = hasItems ? 'none' : 'block';
+  }
+
+  // Allow Enter key on video URL input
+  document.getElementById('videoUrlInput').addEventListener('keydown', e => { if (e.key === 'Enter') addVideoEmbed(); });
+
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Reveal on scroll
+  const observer = new
